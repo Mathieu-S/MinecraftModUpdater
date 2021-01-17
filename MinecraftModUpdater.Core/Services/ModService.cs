@@ -104,5 +104,13 @@ namespace MinecraftModUpdater.Core.Services
 
             return true;
         }
+
+        public void DeleteModFile(string fileName)
+        {
+            if (File.Exists(_path + @"\mods\" + fileName))
+            {
+                File.Delete(_path + @"\mods\" +fileName);
+            }
+        }
     }
 }

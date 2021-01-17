@@ -128,15 +128,10 @@ namespace MinecraftModUpdater.Core.Services
 
             var modUpdaterFile = await ReadMinecraftModUpdaterFileAsync();
 
-            if (!modUpdaterFile.Mods.Contains(mod))
-            {
-                return;
-            }
-            
             var modInFile = modUpdaterFile.Mods.FirstOrDefault(m => m.Name == mod.Name);
-            modInFile.Id = mod.Id;
+            modInFile.FileName = mod.FileName;
             modInFile.Version = mod.Version;
-            
+
             await EditMinecraftModUpdaterFileAsync(modUpdaterFile);
         }
         

@@ -58,6 +58,7 @@ namespace MinecraftModUpdater.CLI
                             {
                                 Id = modsFound.FirstOrDefault().Id,
                                 Name = modsFound.FirstOrDefault().Name,
+                                FileName = modFile.FileName,
                                 Version = modFile.Id
                             };
                             
@@ -72,7 +73,7 @@ namespace MinecraftModUpdater.CLI
                                 foreach (var mod in modListFile.Mods)
                                 {
                                     var modsFound = modService.SearchByName(mod.Name);
-                                    var modFile = await modService.GetLastCompatibleRelease(modsFound.FirstOrDefault().Id);
+                                    var modFile = await modService.GetLastCompatibleRelease(modsFound.FirstOrDefault().Id, "1.16.4");
                                     await modService.DownloadModFileAsync(modFile);
                                 }
                                 
@@ -90,7 +91,49 @@ namespace MinecraftModUpdater.CLI
                     case ("update"):
                     case ("up"):
                     case ("upgrade"):
-                        Console.WriteLine("Case 1");
+                        await modService.RefreshModListAsync();
+                        
+                        if (args.Length > 1 && args[1] != null)
+                        {
+                            var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            var modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name == args[1]);
+
+                            if (modToUpdate != null)
+                            {
+                                var modsFound = await modService.GetLastCompatibleRelease(modToUpdate.Id);
+                                var modFile = await modService.GetLastCompatibleRelease(modsFound.Id, "1.16.4");
+
+                                if (modToUpdate.Version != modFile.Id)
+                                {
+                                    await modService.DownloadModFileAsync(modFile);
+                                    modService.DeleteModFile(modToUpdate.FileName);
+
+                                    modToUpdate.Version = modFile.Id;
+                                    modToUpdate.FileName = modFile.FileName;
+                                    await modListFileService.UpdateModInModUpdaterFile(modToUpdate);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            
+                            foreach (var mod in modListFile.Mods)
+                            {
+                                var modFile = await modService.GetLastCompatibleRelease(mod.Id, "1.16.4");
+
+                                if (mod.Version != modFile.Id)
+                                {
+                                    await modService.DownloadModFileAsync(modFile);
+                                    modService.DeleteModFile(mod.FileName);
+
+                                    mod.Version = modFile.Id;
+                                    mod.FileName = modFile.FileName;
+                                    await modListFileService.UpdateModInModUpdaterFile(mod);
+                                }
+                            }
+                        }
+                        
                         break;
 
                     // Command to install all mods in modList.json
