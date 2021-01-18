@@ -86,7 +86,7 @@ namespace MinecraftModUpdater.Core.Services
                 return;
             }
 
-            await using var openWriteStream = File.OpenWrite(_path + "modList.json");
+            await using var openWriteStream = new FileStream(_path + "modList.json", FileMode.Truncate);
             await JsonSerializer.SerializeAsync(openWriteStream, data);
         }
         

@@ -136,14 +136,27 @@ namespace MinecraftModUpdater.CLI
                         
                         break;
 
-                    // Command to install all mods in modList.json
+                    // Command to delete a mod in modList.json
                     case ("uninstall"):
                     case ("remove"):
                     case ("rm"):
                     case ("r"):
                     case ("un"):
                     case ("unlink"):
-                        Console.WriteLine("Case 1");
+                        if (args.Length > 1 && args[1] != null)
+                        {
+                            var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            var modToDelete = modListFile.Mods. FirstOrDefault(m => m.Name.Contains(args[1]));
+                            
+                            modService.DeleteModFile(modToDelete.FileName);
+                            await modListFileService.RemoveModInModUpdaterFile(modToDelete);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Missing mod name.");
+                        }
+                        
+                        Console.WriteLine($"The mod {args[1]} has been removed.");
                         break;
 
                     // Unknown command

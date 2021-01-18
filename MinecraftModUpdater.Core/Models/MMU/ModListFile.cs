@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MinecraftModUpdater.Core.Models.MMU
 {
@@ -9,11 +10,15 @@ namespace MinecraftModUpdater.Core.Models.MMU
         public IList<ModData> Mods { get; set; }
     }
 
-    public class ModData
+    public class ModData : IEquatable<ModData>
     {
         public uint Id { get; set; }
         public string Name { get; set; }
         public string FileName { get; set; }
         public uint Version { get; set; }
+        public bool Equals(ModData other)
+        {
+            return Id == other.Id && Version == other.Version;
+        }
     }
 }
