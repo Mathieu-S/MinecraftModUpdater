@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MinecraftModUpdater.Core.Exceptions;
 using MinecraftModUpdater.Core.Models.MMU;
 
 namespace MinecraftModUpdater.Core.Services
@@ -46,7 +47,7 @@ namespace MinecraftModUpdater.Core.Services
         {
             if (IsModListFileExist())
             {
-                return;
+                throw new MinecraftModUpdaterException("A file mod-list.json already exist.");
             }
 
             var modListFile = new ModListFile()

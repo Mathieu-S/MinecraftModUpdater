@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MinecraftModUpdater.Core.Exceptions;
 using MinecraftModUpdater.Core.Models.MMU;
 using MinecraftModUpdater.Core.Services;
 
 namespace MinecraftModUpdater.CLI
 {
     /// <summary>
-    /// 
+    /// Define the Minecraft Mod Updater CLI
     /// </summary>
     public static class Program
     {
@@ -19,13 +20,14 @@ namespace MinecraftModUpdater.CLI
         {
             if (args.Length != 0)
             {
+                // Setup environment and services
                 var actualPath = Environment.CurrentDirectory + @"\";
                 var modListFileService = new ModListFileService(actualPath);
                 var modService = new ModService(actualPath);
                 
                 switch (args[0])
                 {
-                    // Command to create a modList.json
+                    // Command to create a mod-list.json
                     case ("init"):
                         Console.WriteLine("Enter your minecraft version :");
                         var version = Console.ReadLine();
@@ -35,8 +37,23 @@ namespace MinecraftModUpdater.CLI
                             Console.WriteLine("Minecraft version unspecified.");
                             return;
                         }
+
+                        try
+                        {
+                            await modListFileService.CreateModListFileAsync(version);
+                        }
+                        catch (MinecraftModUpdaterException e)
+                        {
+                            Console.WriteLine(e.Message);
+                            return;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
                         
-                        await modListFileService.CreateModListFileAsync(version);
+                        Console.WriteLine($"You created a mod-list.json for Minecraft {version}");
                         break;
 
                     // Command to install all mods or add one to modList.json
