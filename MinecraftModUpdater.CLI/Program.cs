@@ -188,13 +188,22 @@ namespace MinecraftModUpdater.CLI
                         
                         if (args.Length > 1 && args[1] != null)
                         {
+                            ModData modToUpdate;
                             var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
-                            var modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name == args[1]);
+                            
+                            try
+                            {
+                                var modId = modService.ConvertModId(args[1]);
+                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Id == modId);
+                            }
+                            catch (MinecraftModUpdaterException)
+                            {
+                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name.Contains(args[1]));
+                            }
 
                             if (modToUpdate != null)
                             {
-                                var modsFound = await modService.GetLastCompatibleRelease(modToUpdate.Id);
-                                var modFile = await modService.GetLastCompatibleRelease(modsFound.Id, "1.16.4");
+                                var modFile = await modService.GetLastCompatibleRelease(modToUpdate.Id, modListFile.MinecraftVersion);
 
                                 if (modToUpdate.Version != modFile.Id)
                                 {
@@ -213,7 +222,7 @@ namespace MinecraftModUpdater.CLI
                             
                             foreach (var mod in modListFile.Mods)
                             {
-                                var modFile = await modService.GetLastCompatibleRelease(mod.Id, "1.16.4");
+                                var modFile = await modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
 
                                 if (mod.Version != modFile.Id)
                                 {
