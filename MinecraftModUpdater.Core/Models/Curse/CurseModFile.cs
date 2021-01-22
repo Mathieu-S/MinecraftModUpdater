@@ -17,7 +17,7 @@ namespace MinecraftModUpdater.Core.Models.Curse
         public byte FileStatus { get; set; }
         public Uri DownloadUrl { get; set; }
         public bool IsAlternate { get; set; }
-        public byte AlternateFileId { get; set; }
+        public uint AlternateFileId { get; set; }
 
         public IEnumerable<ModFileDependency> Dependencies { get; set; }
 
