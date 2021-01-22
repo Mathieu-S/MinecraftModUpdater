@@ -19,9 +19,7 @@ namespace MinecraftModUpdater.CLI
         {
             if (args.Length != 0)
             {
-                // var actualPath = AppDomain.CurrentDomain.BaseDirectory;
-                const string actualPath = @"E:\Bureau\Sandbox\";
-                
+                var actualPath = Environment.CurrentDirectory + @"\";
                 var modListFileService = new ModListFileService(actualPath);
                 var modService = new ModService(actualPath);
                 
