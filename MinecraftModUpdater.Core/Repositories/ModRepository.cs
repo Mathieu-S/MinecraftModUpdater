@@ -120,10 +120,6 @@ namespace MinecraftModUpdater.Core.Repositories
             {
                 throw new CurseApiException("Curse Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
-            catch (JsonException ex)
-            {
-                throw new CurseApiException("Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
-            }
         }
     }
 }
