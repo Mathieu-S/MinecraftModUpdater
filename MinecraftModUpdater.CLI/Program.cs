@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MinecraftModUpdater.Core.Exceptions;
+using MinecraftModUpdater.Core.Models.Curse;
 using MinecraftModUpdater.Core.Models.MMU;
 using MinecraftModUpdater.Core.Services;
 
@@ -64,20 +66,96 @@ namespace MinecraftModUpdater.CLI
 
                         if (args.Length > 1 && args[1] != null)
                         {
-                            var modsFound = modService.SearchByName(args[1]);
-                            var modFile = await modService.GetLastCompatibleRelease(modsFound.FirstOrDefault().Id, "1.16.4");
+                            var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            CurseMod mod;
+                            CurseModFile modFile;
 
+                            try
+                            {
+                                var modId = modService.ConvertModId(args[1]);
+                                mod = modService.SearchById(modId);
+                                modFile = await modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
+                            }
+                            catch (MinecraftModUpdaterException)
+                            {
+                                var modsFound = (List<CurseMod>) modService.SearchByName(args[1]);
+
+                                if (!modsFound.Any())
+                                {
+                                    Console.WriteLine($"The mod called {args[1]} is not found.");
+                                    return;
+                                }
+
+                                if (modsFound.Count == 1)
+                                {
+                                    mod = modsFound.First();
+                                    modFile = await modService.GetLastCompatibleRelease(modsFound.First().Id, modListFile.MinecraftVersion);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The name entered is ambiguous. Several mods contain the same name. Please choose one :");
+
+                                    for (var i = 0; i < modsFound.Count; i++)
+                                    {
+                                        Console.WriteLine($"{i + 1}: {modsFound[i].Name}");
+                                    }
+
+                                    byte modSelectedIndex;
+                                    var entrySelected = Console.ReadLine();
+
+                                    if (string.IsNullOrWhiteSpace(entrySelected))
+                                    {
+                                        Console.WriteLine("Empty response. Exiting.");
+                                        return;
+                                    }
+
+                                    try
+                                    {
+                                        modSelectedIndex = Convert.ToByte(entrySelected);
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        Console.WriteLine($"{entrySelected} is not a number. Exiting.");
+                                        return;
+                                    }
+                                    catch (OverflowException)
+                                    {
+                                        Console.WriteLine($"{entrySelected} don't correspond to a valid number. Exiting.");
+                                        return;
+                                    }
+
+                                    try
+                                    {
+                                        mod = modsFound[modSelectedIndex - 1];
+                                    }
+                                    catch (ArgumentOutOfRangeException)
+                                    {
+                                        Console.WriteLine($"{entrySelected} don't correspond to a valid number. Exiting.");
+                                        return;
+                                    }
+
+                                    modFile = await modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
+                                }
+                            }
+
+                            if (modFile == null)
+                            {
+                                Console.WriteLine($"{mod.Name} isn't compatible with your minecraft version.");
+                                return;
+                            }
+                            
                             await modService.DownloadModFileAsync(modFile);
 
-                            var mod = new ModData
+                            var modData = new ModData
                             {
-                                Id = modsFound.FirstOrDefault().Id,
-                                Name = modsFound.FirstOrDefault().Name,
+                                Id = mod.Id,
+                                Name = mod.Name,
                                 FileName = modFile.FileName,
                                 Version = modFile.Id
                             };
                             
-                            await modListFileService.AddModToModUpdaterFile(mod);
+                            await modListFileService.AddModToModUpdaterFile(modData);
+                            Console.WriteLine($"{modData.Name} has been installed.");
                         }
                         else
                         {
@@ -87,8 +165,8 @@ namespace MinecraftModUpdater.CLI
                             {
                                 foreach (var mod in modListFile.Mods)
                                 {
-                                    var modsFound = modService.SearchByName(mod.Name);
-                                    var modFile = await modService.GetLastCompatibleRelease(modsFound.FirstOrDefault().Id, "1.16.4");
+                                    var modFound = modService.SearchById(mod.Id);
+                                    var modFile = await modService.GetLastCompatibleRelease(modFound.Id, modListFile.MinecraftVersion);
                                     await modService.DownloadModFileAsync(modFile);
                                 }
                                 
