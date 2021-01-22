@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MinecraftModUpdater.Core.Exceptions;
 using MinecraftModUpdater.Core.Models.Curse;
 using MinecraftModUpdater.Core.Repositories;
 
@@ -34,26 +35,20 @@ namespace MinecraftModUpdater.Core.Services
         {
             Mods = (IList<CurseMod>)await ModRepository.GetModsAsync();
         }
+        
+        public CurseMod SearchById(uint modId)
+        {
+            return Mods.FirstOrDefault(m => m.Id == modId);
+        }
 
         /// <summary>
-        /// Searches the name of the by.
+        /// Searches the name of the by name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
         public IEnumerable<CurseMod> SearchByName(string name)
         {
             return Mods.Where(m => m.Name.Contains(name)).ToList();
-        }
-
-        /// <summary>
-        /// Searches the name of the by.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="mods">The mods.</param>
-        /// <returns></returns>
-        public IEnumerable<CurseMod> SearchByName(string name, IEnumerable<CurseMod> mods)
-        {
-            return mods.Where(m => m.Name.Contains(name)).ToList();
         }
 
         /// <summary>
@@ -71,7 +66,7 @@ namespace MinecraftModUpdater.Core.Services
         /// <summary>
         /// Gets the last compatible release.
         /// </summary>
-        /// <param name="mod">The mod.</param>
+        /// <param name="modId">The mod.</param>
         /// <param name="minecraftVersion">The minecraft version.</param>
         /// <returns></returns>
         public async Task<CurseModFile> GetLastCompatibleRelease(uint modId, string minecraftVersion)
