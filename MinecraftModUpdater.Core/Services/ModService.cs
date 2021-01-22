@@ -112,5 +112,17 @@ namespace MinecraftModUpdater.Core.Services
                 File.Delete(_path + @"\mods\" +fileName);
             }
         }
+
+        public uint ConvertModId(string modId)
+        {
+            try
+            {
+                return Convert.ToUInt32(modId);
+            }
+            catch (FormatException e)
+            {
+                throw new MinecraftModUpdaterException($"The modId '{modId}' is not a valid ID.", e.InnerException);
+            }
+        }
     }
 }
