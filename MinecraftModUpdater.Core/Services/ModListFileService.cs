@@ -3,21 +3,29 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MinecraftModUpdater.Core.Exceptions;
 using MinecraftModUpdater.Core.Models.MMU;
 
 namespace MinecraftModUpdater.Core.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ModListFileService
     {
         private readonly string _path;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModListFileService"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
         public ModListFileService(string path)
         {
             _path = path;
         }
-        
+
         /// <summary>
-        /// Creates the curse mod updater file.
+        /// Creates the mod list file asynchronous.
         /// </summary>
         public async Task CreateModListFileAsync()
         {
@@ -36,17 +44,17 @@ namespace MinecraftModUpdater.Core.Services
             await using var createStream = File.Create(_path + "modList.json");
             await JsonSerializer.SerializeAsync(createStream, modListFile);
         }
-        
+
         /// <summary>
-        /// Creates the curse mod updater file.
+        /// Creates the mod list file asynchronous.
         /// </summary>
-        /// <param name="minecraftVersion"></param>
-        /// <returns></returns>
+        /// <param name="minecraftVersion">The minecraft version.</param>
+        /// <exception cref="MinecraftModUpdaterException">A file mod-list.json already exist.</exception>
         public async Task CreateModListFileAsync(string minecraftVersion)
         {
             if (IsModListFileExist())
             {
-                return;
+                throw new MinecraftModUpdaterException("A file mod-list.json already exist.");
             }
 
             var modListFile = new ModListFile()
@@ -61,7 +69,7 @@ namespace MinecraftModUpdater.Core.Services
         }
 
         /// <summary>
-        /// Reads the curse mod updater file.
+        /// Reads the minecraft mod updater file asynchronous.
         /// </summary>
         /// <returns></returns>
         public async Task<ModListFile> ReadMinecraftModUpdaterFileAsync()
@@ -76,9 +84,9 @@ namespace MinecraftModUpdater.Core.Services
         }
 
         /// <summary>
-        /// Edits the curse mod updater file.
+        /// Edits the minecraft mod updater file asynchronous.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="data">The data.</param>
         public async Task EditMinecraftModUpdaterFileAsync(ModListFile data)
         {
             if (!IsModListFileExist())
@@ -89,12 +97,11 @@ namespace MinecraftModUpdater.Core.Services
             await using var openWriteStream = new FileStream(_path + "modList.json", FileMode.Truncate);
             await JsonSerializer.SerializeAsync(openWriteStream, data);
         }
-        
+
         /// <summary>
-        /// 
+        /// Adds the mod to mod updater file.
         /// </summary>
-        /// <param name="mod"></param>
-        /// <returns></returns>
+        /// <param name="mod">The mod.</param>
         public async Task AddModToModUpdaterFile(ModData mod)
         {
             if (!IsModListFileExist())
@@ -113,12 +120,11 @@ namespace MinecraftModUpdater.Core.Services
             
             await EditMinecraftModUpdaterFileAsync(modUpdaterFile);
         }
-        
+
         /// <summary>
-        /// 
+        /// Updates the mod in mod updater file.
         /// </summary>
-        /// <param name="mod"></param>
-        /// <returns></returns>
+        /// <param name="mod">The mod.</param>
         public async Task UpdateModInModUpdaterFile(ModData mod)
         {
             if (!IsModListFileExist())
@@ -134,12 +140,11 @@ namespace MinecraftModUpdater.Core.Services
 
             await EditMinecraftModUpdaterFileAsync(modUpdaterFile);
         }
-        
+
         /// <summary>
-        /// 
+        /// Removes the mod in mod updater file.
         /// </summary>
-        /// <param name="mod"></param>
-        /// <returns></returns>
+        /// <param name="mod">The mod.</param>
         public async Task RemoveModInModUpdaterFile(ModData mod)
         {
             if (!IsModListFileExist())
