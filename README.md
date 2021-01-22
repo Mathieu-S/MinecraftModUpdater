@@ -42,7 +42,7 @@ R: Basically, I spent a LOT of my time to update manualiy my mods and I don't li
 
 ```
 Q: I already have a mod preset/collection, can I manage them with MMU ?
-R: Oui et non, il n'est pas possible pour le moment de gérer les mods que vous n'avez pas installé avec cet outil. Désoler. 
+R: Yes and no, it is not possible at the moment to manage mods that you have not installed with this tool. Sorry.
 ```
 
 ```
@@ -57,5 +57,5 @@ R: I'm really sorry about that, this project is actually in WIP so it's possible
 
 ```
 Q: OMG Why did you use .NET ?! You should use X !
-R: Ok listen. First of all, it's a free tool. Second, I code with what I like. Third, if you are not satisfied, go develop an equivalent of this X tool!
+R: Ok listen. First of all, it's a free tool. Secondly, I code with what I like. Thirdly, if you are not satisfied, go to develop an equivalent of this tool in X!
 ```
