@@ -1,4 +1,4 @@
-﻿#Minecraft Mod Updater
+﻿# Minecraft Mod Updater
 
 Minecraft Mod Updater is a package manager for Minecraft's mods. It work on any platform supported by .NET5.
 This this tool don't download or launch Minecraft.
@@ -7,7 +7,7 @@ You can run this tool with the **UI (WIP)** or the **CLI**. If you are not on Wi
 
 If you are familiar with dependencies files like `packages.json`, `requirement.txt`, `.csproj`, `composer.json`, `Dockerfile`, etc. MMU work with its own file : `modList.json`
 
-##MMU Features
+## MMU Features
 * Multi-platforms (Windows, Linux, Mac)
 * A simple CLI
 * An UI if you are allergic to CLI. (WIP)
@@ -15,7 +15,7 @@ If you are familiar with dependencies files like `packages.json`, `requirement.t
 * A dependency file to restore your mods quickly.
 * A special file format for creating and sharing a modpack. (WIP)
 
-##Install
+## Install
 First, you need to install [.NET5](https://dotnet.microsoft.com/download). After that, you can download a [release](https://github.com/Mathieu-S/MinecraftModUpdater/releases) of this tool and install with this command :
 
 ```bash
@@ -24,7 +24,7 @@ dotnet tool install --global --add-source ./ MinecraftModUpdater.CLI
 
 *Note: The ./ is where you download the file. This solution is temporary, later you can download and install the tool automatically from Nuget.*
 
-##Usage
+## Usage
 You can use it with `mmu`. The tool has the same commands as npm for NodeJs..
 
 ```bash
@@ -34,7 +34,7 @@ mmu update (optional mod-name or Id)    # Update dependencies or a mod
 mmu remove (mod-name or Id)             # Remove a mod
 ```
 
-##FAQ
+## FAQ
 ```
 Q: Why this tool exist ?
 R: Basically, I spent a LOT of my time to update manualiy my mods and I don't like the official Curse app.
