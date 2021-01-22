@@ -10,7 +10,7 @@ using MinecraftModUpdater.Core.Repositories;
 namespace MinecraftModUpdater.Core.Services
 {
     /// <summary>
-    /// 
+    /// Service managing mod files.
     /// </summary>
     public class ModService
     {
@@ -35,14 +35,19 @@ namespace MinecraftModUpdater.Core.Services
         {
             Mods = (IList<CurseMod>)await ModRepository.GetModsAsync();
         }
-        
+
+        /// <summary>
+        /// Searches the mod by its identifier.
+        /// </summary>
+        /// <param name="modId">The mod identifier.</param>
+        /// <returns></returns>
         public CurseMod SearchById(uint modId)
         {
             return Mods.FirstOrDefault(m => m.Id == modId);
         }
 
         /// <summary>
-        /// Searches the name of the by name.
+        /// Searches the mod by its name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
@@ -52,9 +57,9 @@ namespace MinecraftModUpdater.Core.Services
         }
 
         /// <summary>
-        /// 
+        /// Gets the latest compatible version of the mod.
         /// </summary>
-        /// <param name="modId"></param>
+        /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
         public async Task<CurseModFile> GetLastCompatibleRelease(uint modId)
         {
@@ -62,11 +67,11 @@ namespace MinecraftModUpdater.Core.Services
             var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(MinecraftVersion));
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
-        
+
         /// <summary>
-        /// Gets the last compatible release.
+        /// Gets the latest compatible version of the mod.
         /// </summary>
-        /// <param name="modId">The mod.</param>
+        /// <param name="modId">The mod identifier.</param>
         /// <param name="minecraftVersion">The minecraft version.</param>
         /// <returns></returns>
         public async Task<CurseModFile> GetLastCompatibleRelease(uint modId, string minecraftVersion)
@@ -75,7 +80,7 @@ namespace MinecraftModUpdater.Core.Services
             var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(minecraftVersion));
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
-        
+
         /// <summary>
         /// Downloads the mod file asynchronous.
         /// </summary>
@@ -100,6 +105,10 @@ namespace MinecraftModUpdater.Core.Services
             return true;
         }
 
+        /// <summary>
+        /// Deletes the mod file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
         public void DeleteModFile(string fileName)
         {
             if (File.Exists(_path + @"\mods\" + fileName))
@@ -108,6 +117,12 @@ namespace MinecraftModUpdater.Core.Services
             }
         }
 
+        /// <summary>
+        /// Converts the mod identifier.
+        /// </summary>
+        /// <param name="modId">The mod identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="MinecraftModUpdaterException">The modId '{modId}' is not a valid ID.</exception>
         public uint ConvertModId(string modId)
         {
             try

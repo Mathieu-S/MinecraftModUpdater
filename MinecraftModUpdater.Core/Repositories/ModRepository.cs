@@ -20,13 +20,13 @@ namespace MinecraftModUpdater.Core.Repositories
         private const string BASE_URL = "https://addons-ecs.forgesvc.net/api/v2/addon/";
 
         /// <summary>
-        /// Gets the mods asynchronous.
+        /// Gets the list of mods from the Cruse API asynchronously.
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="MinecraftModUpdater.Core.Exceptions.CurseApiException">
-        /// Curse Mod Updater cannot access API, please check your internet connection.
-        /// -or-
-        /// Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
+        /// <exception cref="CurseApiException">
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// or
+        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
         /// </exception>
         public static async Task<IEnumerable<CurseMod>> GetModsAsync()
         {
@@ -37,23 +37,23 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
             }
         }
 
         /// <summary>
-        /// Gets the mod asynchronous.
+        /// Gets a mod from the Cruse API asynchronously.
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
-        /// <exception cref="MinecraftModUpdater.Core.Exceptions.CurseApiException">
-        /// Curse Mod Updater cannot access API, please check your internet connection.
-        /// -or-
-        /// Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
+        /// <exception cref="CurseApiException">
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// or
+        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
         /// </exception>
         public static async Task<CurseMod> GetModAsync(uint modId)
         {
@@ -64,11 +64,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
             }
         }
 
@@ -77,10 +77,10 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
-        /// <exception cref="MinecraftModUpdater.Core.Exceptions.CurseApiException">
-        /// Curse Mod Updater cannot access API, please check your internet connection.
-        /// -or-
-        /// Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
+        /// <exception cref="CurseApiException">
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// or
+        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
         /// </exception>
         public static async Task<IEnumerable<CurseModFile>> GetModFilesAsync(uint modId)
         {
@@ -91,11 +91,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
             }
         }
 
@@ -104,11 +104,7 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="mod">The mod.</param>
         /// <returns></returns>
-        /// <exception cref="MinecraftModUpdater.Core.Exceptions.CurseApiException">
-        /// Curse Mod Updater cannot access API, please check your internet connection.
-        /// -or-
-        /// Curse Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
-        /// </exception>
+        /// <exception cref="CurseApiException">Minecraft Mod Updater cannot access API, please check your internet connection.</exception>
         public static async Task<Stream> GetStreamModFileAsync(CurseModFile mod)
         {
             using var client = new HttpClient();
@@ -118,7 +114,7 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
-                throw new CurseApiException("Curse Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
+                throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
         }
     }
