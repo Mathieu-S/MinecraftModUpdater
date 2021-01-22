@@ -6,6 +6,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>mmu</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageVersion>0.1.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
