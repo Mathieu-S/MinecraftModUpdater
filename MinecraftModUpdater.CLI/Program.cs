@@ -73,12 +73,12 @@ namespace MinecraftModUpdater.CLI
                             try
                             {
                                 var modId = modService.ConvertModId(args[1]);
-                                mod = modService.SearchById(modId);
+                                mod = await modService.SearchByIdAsync(modId);
                                 modFile = await modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                var modsFound = (List<CurseMod>) modService.SearchByName(args[1]);
+                                var modsFound = (List<CurseMod>) await modService.SearchByNameAsync(args[1]);
 
                                 if (!modsFound.Any())
                                 {
@@ -165,7 +165,7 @@ namespace MinecraftModUpdater.CLI
                             {
                                 foreach (var mod in modListFile.Mods)
                                 {
-                                    var modFound = modService.SearchById(mod.Id);
+                                    var modFound = await modService.SearchByIdAsync(mod.Id);
                                     var modFile = await modService.GetLastCompatibleRelease(modFound.Id, modListFile.MinecraftVersion);
                                     await modService.DownloadModFileAsync(modFile);
                                 }
