@@ -6,7 +6,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>mmu</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <PackageVersion>0.1.0</PackageVersion>
+    <PackageVersion>0.2.0</PackageVersion>
+    <Title>Minecraft Mod Updater</Title>
+    <PackageProjectUrl>https://github.com/Mathieu-S/MinecraftModUpdater</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Mathieu-S/MinecraftModUpdater</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
