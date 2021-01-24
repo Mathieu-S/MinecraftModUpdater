@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MinecraftModUpdater.Core.Models.Curse;
+using MinecraftModUpdater.Core.Repositories;
 using MinecraftModUpdater.Core.Services;
 using Xunit;
 
@@ -14,6 +16,34 @@ namespace MinecraftModUpdater.Tests.Services
             _modService = new ModService(@"E:\Bureau\Sandbox\");
         }
 
+        [Fact]
+        public async void SearchByName_OneTerm()
+        {
+            // Arrange
+            const string terms = "jei";
+            var modFromApi = await ModRepository.SearchModByNameAsync(terms);
+
+            // Act
+            var result = await _modService.SearchByNameAsync(terms);
+
+            // Assert
+            Assert.True(modFromApi.Count() == result.Count());
+        }
+        
+        [Fact]
+        public async void SearchByName_TwoTerms()
+        {
+            // Arrange
+            const string terms = "jei thaumic";
+            var modFromApi = await ModRepository.SearchModByNameAsync(terms);
+
+            // Act
+            var result = await _modService.SearchByNameAsync(terms);
+
+            // Assert
+            Assert.False(modFromApi.Count() == result.Count());
+        }
+        
         [Fact]
         public async void DownloadModFile()
         {
