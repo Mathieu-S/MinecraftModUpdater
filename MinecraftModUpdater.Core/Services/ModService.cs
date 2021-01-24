@@ -15,8 +15,6 @@ namespace MinecraftModUpdater.Core.Services
     public class ModService
     {
         private readonly string _path;
-        public IEnumerable<CurseMod> Mods { get; private set; }
-        public string MinecraftVersion { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModService"/> class.
@@ -25,15 +23,6 @@ namespace MinecraftModUpdater.Core.Services
         public ModService(string path)
         {
             _path = path;
-            Mods = new List<CurseMod>();
-        }
-
-        /// <summary>
-        /// Refreshes the mod list asynchronous.
-        /// </summary>
-        public async Task RefreshModListAsync()
-        {
-            Mods = (IList<CurseMod>)await ModRepository.GetModsAsync();
         }
 
         /// <summary>
@@ -65,18 +54,6 @@ namespace MinecraftModUpdater.Core.Services
             }
 
             return mods;
-        }
-
-        /// <summary>
-        /// Gets the latest compatible version of the mod.
-        /// </summary>
-        /// <param name="modId">The mod identifier.</param>
-        /// <returns></returns>
-        public async Task<CurseModFile> GetLastCompatibleRelease(uint modId)
-        {
-            var modFiles = await ModRepository.GetModFilesAsync(modId);
-            var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(MinecraftVersion));
-            return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
 
         /// <summary>
