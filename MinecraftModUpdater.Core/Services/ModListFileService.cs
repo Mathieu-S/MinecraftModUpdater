@@ -9,11 +9,12 @@ using MinecraftModUpdater.Core.Models.MMU;
 namespace MinecraftModUpdater.Core.Services
 {
     /// <summary>
-    /// 
+    /// Service managing the dependency file.
     /// </summary>
     public class ModListFileService
     {
         private readonly string _path;
+        private const string FILE_NAME = "modlist.json";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModListFileService"/> class.
@@ -41,7 +42,7 @@ namespace MinecraftModUpdater.Core.Services
                 Mods = new List<ModData>()
             };
 
-            await using var createStream = File.Create(_path + "modList.json");
+            await using var createStream = File.Create(_path + FILE_NAME);
             await JsonSerializer.SerializeAsync(createStream, modListFile);
         }
 
@@ -54,7 +55,7 @@ namespace MinecraftModUpdater.Core.Services
         {
             if (IsModListFileExist())
             {
-                throw new MinecraftModUpdaterException("A file mod-list.json already exist.");
+                throw new MinecraftModUpdaterException($"A file {FILE_NAME} already exist.");
             }
 
             var modListFile = new ModListFile()
@@ -64,7 +65,7 @@ namespace MinecraftModUpdater.Core.Services
                 Mods = new List<ModData>()
             };
 
-            await using var createStream = File.Create(_path + "modList.json");
+            await using var createStream = File.Create(_path + FILE_NAME);
             await JsonSerializer.SerializeAsync(createStream, modListFile);
         }
 
@@ -79,7 +80,7 @@ namespace MinecraftModUpdater.Core.Services
                 await CreateModListFileAsync();
             }
 
-            await using var openStream = File.OpenRead(_path + "modList.json");
+            await using var openStream = File.OpenRead(_path + FILE_NAME);
             return await JsonSerializer.DeserializeAsync<ModListFile>(openStream);
         }
 
@@ -94,7 +95,7 @@ namespace MinecraftModUpdater.Core.Services
                 return;
             }
 
-            await using var openWriteStream = new FileStream(_path + "modList.json", FileMode.Truncate);
+            await using var openWriteStream = new FileStream(_path + FILE_NAME, FileMode.Truncate);
             await JsonSerializer.SerializeAsync(openWriteStream, data);
         }
 
@@ -172,7 +173,7 @@ namespace MinecraftModUpdater.Core.Services
         /// </returns>
         private bool IsModListFileExist()
         {
-            return File.Exists(_path + "modList.json");
+            return File.Exists(_path + FILE_NAME);
         }
     }
 }
