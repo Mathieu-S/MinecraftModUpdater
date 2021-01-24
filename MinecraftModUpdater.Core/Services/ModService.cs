@@ -54,8 +54,17 @@ namespace MinecraftModUpdater.Core.Services
         /// <returns></returns>
         public async Task<IEnumerable<CurseMod>> SearchByNameAsync(string name, bool strictSearch = true)
         {
-            var mods = await ModRepository.SearchModByNameAsync(name);
-            return strictSearch ? mods.Where(m => m.Name.ToLower().Contains(name.ToLower())).ToList() : mods;
+            var mods = (List<CurseMod>) await ModRepository.SearchModByNameAsync(name);
+
+            if (strictSearch)
+            {
+                foreach(var word in name.ToLower().Split(' '))
+                {
+                    mods = mods.Where(m => m.Name.ToLower().Contains(word)).ToList();
+                }
+            }
+
+            return mods;
         }
 
         /// <summary>

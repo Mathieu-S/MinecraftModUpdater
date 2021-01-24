@@ -58,6 +58,50 @@ namespace MinecraftModUpdater.CLI
                         Console.WriteLine($"You created a mod-list.json for Minecraft {version}");
                         break;
 
+                    case ("search"):
+                    case ("s"):
+                    case ("se"):
+                    case ("find"):
+                        if (args.Length > 1 && args[1] != null)
+                        {
+                            var terms = args.ToList();
+                            terms.RemoveAt(0);
+                            string searchTerms;
+                            List<CurseMod> mods;
+                            
+                            if (terms.Contains("--not-strict"))
+                            {
+                                terms.Remove("--not-strict");
+                                searchTerms = string.Join(' ', terms);
+                                mods = (List<CurseMod>) await modService.SearchByNameAsync(searchTerms, false);
+                            }
+                            else
+                            {
+                                searchTerms = string.Join(' ', terms);
+                                mods = (List<CurseMod>) await modService.SearchByNameAsync(searchTerms);
+                            }
+
+                            if (!mods.Any())
+                            {
+                                Console.WriteLine("No mod found that matches your terms.");
+                                return;
+                            }
+                            
+                            Console.WriteLine($"{mods.Count} mod(s) correspond to your terms :");
+                            Console.WriteLine("MOD_ID    MOD_NAME");
+
+                            foreach (var mod in mods)
+                            {
+                                Console.WriteLine($"{mod.Id}    {mod.Name}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Missing mod name.");
+                        }
+                        
+                        break;
+
                     // Command to install all mods or add one to modList.json
                     case ("install"):
                     case ("i"):
