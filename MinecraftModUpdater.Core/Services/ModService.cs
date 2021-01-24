@@ -41,9 +41,9 @@ namespace MinecraftModUpdater.Core.Services
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
-        public CurseMod SearchById(uint modId)
+        public async Task<CurseMod> SearchByIdAsync(uint modId)
         {
-            return Mods.FirstOrDefault(m => m.Id == modId);
+            return await ModRepository.GetModAsync(modId);
         }
 
         /// <summary>
