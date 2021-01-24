@@ -50,10 +50,12 @@ namespace MinecraftModUpdater.Core.Services
         /// Searches the mod by its name.
         /// </summary>
         /// <param name="name">The name.</param>
+        /// <param name="strictSearch">if set to <c>true</c> [strict search].</param>
         /// <returns></returns>
-        public IEnumerable<CurseMod> SearchByName(string name)
+        public async Task<IEnumerable<CurseMod>> SearchByNameAsync(string name, bool strictSearch = true)
         {
-            return Mods.Where(m => m.Name.Contains(name)).ToList();
+            var mods = await ModRepository.SearchModByNameAsync(name);
+            return strictSearch ? mods.Where(m => m.Name.ToLower().Contains(name.ToLower())).ToList() : mods;
         }
 
         /// <summary>
