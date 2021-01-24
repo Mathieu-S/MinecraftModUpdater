@@ -34,7 +34,7 @@ namespace MinecraftModUpdater.Core.Models.Curse
 
         public bool IsFeatured { get; set; }
         public float PopularityScore { get; set; }
-        public ushort GamePopularityRank { get; set; }
+        public uint GamePopularityRank { get; set; }
         public string PrimaryLanguage { get; set; }
         public string GameSlug { get; set; }
         public string GameName { get; set; }
