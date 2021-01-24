@@ -73,6 +73,33 @@ namespace MinecraftModUpdater.Core.Repositories
         }
 
         /// <summary>
+        /// Searches the mod by name asynchronously.
+        /// </summary>
+        /// <param name="modName">Name of the mod.</param>
+        /// <returns></returns>
+        /// <exception cref="CurseApiException">
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// or
+        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
+        /// </exception>
+        public static async Task<IEnumerable<CurseMod>> SearchModByNameAsync(string modName)
+        {
+            using var client = new HttpClient();
+            try
+            {
+                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}search?gameId=432&sectionId=6&searchFilter={modName}");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
+            }
+            catch (JsonException ex)
+            {
+                throw new CurseApiException("Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.", ex.InnerException);
+            }
+        }
+
+        /// <summary>
         /// Gets the mod files asynchronous.
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
