@@ -58,12 +58,53 @@ namespace MinecraftModUpdater.CLI
                         Console.WriteLine($"You created a mod-list.json for Minecraft {version}");
                         break;
 
+                    case ("search"):
+                    case ("s"):
+                    case ("se"):
+                    case ("find"):
+                        if (args.Length > 1 && args[1] != null)
+                        {
+                            var terms = (List<string>) GetParams(args);
+                            string searchTerms;
+                            List<CurseMod> mods;
+                            
+                            if (terms.Contains("--not-strict"))
+                            {
+                                terms.Remove("--not-strict");
+                                searchTerms = string.Join(' ', terms);
+                                mods = (List<CurseMod>) await modService.SearchByNameAsync(searchTerms, false);
+                            }
+                            else
+                            {
+                                searchTerms = string.Join(' ', terms);
+                                mods = (List<CurseMod>) await modService.SearchByNameAsync(searchTerms);
+                            }
+
+                            if (!mods.Any())
+                            {
+                                Console.WriteLine("No mod found that matches your terms.");
+                                return;
+                            }
+                            
+                            Console.WriteLine($"{mods.Count} mod(s) correspond to your terms :");
+                            Console.WriteLine("MOD_ID    MOD_NAME");
+
+                            foreach (var mod in mods)
+                            {
+                                Console.WriteLine($"{mod.Id}    {mod.Name}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Missing mod name.");
+                        }
+                        
+                        break;
+
                     // Command to install all mods or add one to modList.json
                     case ("install"):
                     case ("i"):
                     case ("add"):
-                        await modService.RefreshModListAsync();
-
                         if (args.Length > 1 && args[1] != null)
                         {
                             var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
@@ -73,12 +114,14 @@ namespace MinecraftModUpdater.CLI
                             try
                             {
                                 var modId = modService.ConvertModId(args[1]);
-                                mod = modService.SearchById(modId);
+                                mod = await modService.SearchByIdAsync(modId);
                                 modFile = await modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                var modsFound = (List<CurseMod>) modService.SearchByName(args[1]);
+                                var terms = (List<string>) GetParams(args);
+                                var searchTerms = string.Join(' ', terms);
+                                var modsFound = (List<CurseMod>) await modService.SearchByNameAsync(searchTerms);
 
                                 if (!modsFound.Any())
                                 {
@@ -165,7 +208,7 @@ namespace MinecraftModUpdater.CLI
                             {
                                 foreach (var mod in modListFile.Mods)
                                 {
-                                    var modFound = modService.SearchById(mod.Id);
+                                    var modFound = await modService.SearchByIdAsync(mod.Id);
                                     var modFile = await modService.GetLastCompatibleRelease(modFound.Id, modListFile.MinecraftVersion);
                                     await modService.DownloadModFileAsync(modFile);
                                 }
@@ -184,8 +227,6 @@ namespace MinecraftModUpdater.CLI
                     case ("update"):
                     case ("up"):
                     case ("upgrade"):
-                        await modService.RefreshModListAsync();
-                        
                         if (args.Length > 1 && args[1] != null)
                         {
                             ModData modToUpdate;
@@ -287,6 +328,13 @@ namespace MinecraftModUpdater.CLI
             {
                 Console.WriteLine("No command");
             }
+        }
+
+        private static IEnumerable<string> GetParams(IEnumerable<string> args)
+        {
+            var terms = args.ToList();
+            terms.RemoveAt(0);
+            return terms;
         }
     }
 }
