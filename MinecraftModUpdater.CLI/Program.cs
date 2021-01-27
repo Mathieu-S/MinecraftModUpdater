@@ -229,7 +229,7 @@ namespace MinecraftModUpdater.CLI
                                     await modService.DownloadModFileAsync(modFile);
                                 }
                                 
-                                Console.WriteLine($"{modListFile.Mods.Count} mods has been installed.");
+                                Console.WriteLine($"{modListFile.Mods.Count} mod(s) has been installed.");
                             }
                             else
                             {
