@@ -58,6 +58,22 @@ namespace MinecraftModUpdater.CLI
                         Console.WriteLine($"You created a mod-list.json for Minecraft {version}");
                         break;
 
+                    // Command to list all mods installed
+                    case ("list"):
+                    case ("ls"):
+                    case ("la"):
+                    case ("ll"):
+                        var modList = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                        
+                        Console.WriteLine("MOD_ID    MOD_NAME");
+                        
+                        foreach (var mod in modList.Mods)
+                        {
+                            Console.WriteLine($"{mod.Id}    {mod.Name}");
+                        }
+                        
+                        break;
+                    
                     case ("search"):
                     case ("s"):
                     case ("se"):
