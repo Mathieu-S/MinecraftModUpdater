@@ -276,6 +276,7 @@ namespace MinecraftModUpdater.CLI
                         else
                         {
                             var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            var updatedMods = new List<ModData>();
                             
                             foreach (var mod in modListFile.Mods)
                             {
@@ -285,11 +286,18 @@ namespace MinecraftModUpdater.CLI
                                 {
                                     await modService.DownloadModFileAsync(modFile);
                                     modService.DeleteModFile(mod.FileName);
-
                                     mod.Version = modFile.Id;
                                     mod.FileName = modFile.FileName;
                                     await modListFileService.UpdateModInModUpdaterFile(mod);
+                                    updatedMods.Add(mod);
                                 }
+                            }
+                            
+                            Console.WriteLine($"These {updatedMods.Count} mod(s) have been updated:");
+
+                            foreach (var mod in updatedMods)
+                            {
+                                Console.WriteLine(mod.Name);
                             }
                         }
                         
