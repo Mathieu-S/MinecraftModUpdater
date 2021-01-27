@@ -74,6 +74,7 @@ namespace MinecraftModUpdater.CLI
                         
                         break;
                     
+                    // Command to search a mod by name or ID
                     case ("search"):
                     case ("s"):
                     case ("se"):
