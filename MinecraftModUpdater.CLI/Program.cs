@@ -74,6 +74,7 @@ namespace MinecraftModUpdater.CLI
                         
                         break;
                     
+                    // Command to search a mod by name or ID
                     case ("search"):
                     case ("s"):
                     case ("se"):
@@ -229,7 +230,7 @@ namespace MinecraftModUpdater.CLI
                                     await modService.DownloadModFileAsync(modFile);
                                 }
                                 
-                                Console.WriteLine($"{modListFile.Mods.Count} mods has been installed.");
+                                Console.WriteLine($"{modListFile.Mods.Count} mod(s) has been installed.");
                             }
                             else
                             {
@@ -255,7 +256,9 @@ namespace MinecraftModUpdater.CLI
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name.Contains(args[1]));
+                                var terms = (List<string>) GetParams(args);
+                                var searchTerms = string.Join(' ', terms);
+                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name.ToLower().Contains(searchTerms.ToLower()));
                             }
 
                             if (modToUpdate != null)
@@ -270,12 +273,23 @@ namespace MinecraftModUpdater.CLI
                                     modToUpdate.Version = modFile.Id;
                                     modToUpdate.FileName = modFile.FileName;
                                     await modListFileService.UpdateModInModUpdaterFile(modToUpdate);
+                                    
+                                    Console.WriteLine($"{modToUpdate.Name} has been updated.");
                                 }
+                                else
+                                {
+                                    Console.WriteLine($"{modToUpdate.Name} is already up to date.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("This mod doesn't appear to be installed.");
                             }
                         }
                         else
                         {
                             var modListFile = await modListFileService.ReadMinecraftModUpdaterFileAsync();
+                            var updatedMods = new List<ModData>();
                             
                             foreach (var mod in modListFile.Mods)
                             {
@@ -285,11 +299,18 @@ namespace MinecraftModUpdater.CLI
                                 {
                                     await modService.DownloadModFileAsync(modFile);
                                     modService.DeleteModFile(mod.FileName);
-
                                     mod.Version = modFile.Id;
                                     mod.FileName = modFile.FileName;
                                     await modListFileService.UpdateModInModUpdaterFile(mod);
+                                    updatedMods.Add(mod);
                                 }
+                            }
+                            
+                            Console.WriteLine($"These {updatedMods.Count} mod(s) have been updated:");
+
+                            foreach (var mod in updatedMods)
+                            {
+                                Console.WriteLine(mod.Name);
                             }
                         }
                         
