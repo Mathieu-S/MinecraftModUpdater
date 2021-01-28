@@ -273,7 +273,17 @@ namespace MinecraftModUpdater.CLI
                                     modToUpdate.Version = modFile.Id;
                                     modToUpdate.FileName = modFile.FileName;
                                     await modListFileService.UpdateModInModUpdaterFile(modToUpdate);
+                                    
+                                    Console.WriteLine($"{modToUpdate.Name} has been updated.");
                                 }
+                                else
+                                {
+                                    Console.WriteLine($"{modToUpdate.Name} is already up to date.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("This mod doesn't appear to be installed.");
                             }
                         }
                         else
