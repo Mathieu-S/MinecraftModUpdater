@@ -335,7 +335,9 @@ namespace MinecraftModUpdater.CLI
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                modToDelete = modListFile.Mods.FirstOrDefault(m => m.Name.Contains(args[1]));
+                                var terms = (List<string>) GetParams(args);
+                                var searchTerms = string.Join(' ', terms);
+                                modToDelete = modListFile.Mods.FirstOrDefault(m => m.Name.ToLower().Contains(searchTerms.ToLower()));
                             }
 
                             if (modToDelete == null)
@@ -346,13 +348,14 @@ namespace MinecraftModUpdater.CLI
                             
                             modService.DeleteModFile(modToDelete.FileName);
                             await modListFileService.RemoveModInModUpdaterFile(modToDelete);
+                            
+                            Console.WriteLine($"The mod {modToDelete.Name} has been removed.");
                         }
                         else
                         {
                             Console.WriteLine("Missing mod name or id.");
                         }
                         
-                        Console.WriteLine($"The mod {args[1]} has been removed.");
                         break;
 
                     // Unknown command
