@@ -27,7 +27,7 @@ You can use it with `mmu`. The tool has the same commands as npm for NodeJs. Kee
 
 ### Init
 ```bash
-mmu init
+mmu init (with no args, in minecraft dir)
 ```
 Initialise a new `modlist.json`. You must specify your actual version of Minecraft when prompted.
 
@@ -39,9 +39,17 @@ This command displays a list of mods containing all of the terms (name) entered.
 
 _Aliases: s, se, find_
 
+### List
+```bash
+mmu list (with no args, in minecraft dir)
+```
+This command displays a list of all installed mods.
+
+_Aliases: ls, la, ll_
+
 ### Install
 ```bash
-mmu install (with no args, in package dir)
+mmu install (with no args, in minecraft dir)
 mmu install <mod name>
 mmu install <mod id>
 ```
@@ -51,7 +59,7 @@ _Aliases: i, add_
 
 ### Update
 ```bash
-mmu update (with no args, in package dir)
+mmu update (with no args, in minecraft dir)
 mmu update <mod name>
 mmu update <mod id>
 ```
@@ -61,7 +69,7 @@ _Aliases: up, upgrade_
 
 ### Uninstall
 ```bash
-mmu uninstall <mod name>
+mmu uninstall <mod name> (in minecraft dir)
 mmu uninstall <mod id>
 ```
 Uninstall a mod by name or Id.
