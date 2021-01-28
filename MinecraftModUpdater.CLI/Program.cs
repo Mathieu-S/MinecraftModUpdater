@@ -335,7 +335,9 @@ namespace MinecraftModUpdater.CLI
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                modToDelete = modListFile.Mods.FirstOrDefault(m => m.Name.Contains(args[1]));
+                                var terms = (List<string>) GetParams(args);
+                                var searchTerms = string.Join(' ', terms);
+                                modToDelete = modListFile.Mods.FirstOrDefault(m => m.Name.ToLower().Contains(searchTerms.ToLower()));
                             }
 
                             if (modToDelete == null)
