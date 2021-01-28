@@ -256,7 +256,9 @@ namespace MinecraftModUpdater.CLI
                             }
                             catch (MinecraftModUpdaterException)
                             {
-                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name.Contains(args[1]));
+                                var terms = (List<string>) GetParams(args);
+                                var searchTerms = string.Join(' ', terms);
+                                modToUpdate = modListFile.Mods.FirstOrDefault(m => m.Name.ToLower().Contains(searchTerms.ToLower()));
                             }
 
                             if (modToUpdate != null)
