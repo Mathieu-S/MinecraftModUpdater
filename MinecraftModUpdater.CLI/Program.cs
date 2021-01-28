@@ -348,13 +348,14 @@ namespace MinecraftModUpdater.CLI
                             
                             modService.DeleteModFile(modToDelete.FileName);
                             await modListFileService.RemoveModInModUpdaterFile(modToDelete);
+                            
+                            Console.WriteLine($"The mod {modToDelete.Name} has been removed.");
                         }
                         else
                         {
                             Console.WriteLine("Missing mod name or id.");
                         }
                         
-                        Console.WriteLine($"The mod {args[1]} has been removed.");
                         break;
 
                     // Unknown command
