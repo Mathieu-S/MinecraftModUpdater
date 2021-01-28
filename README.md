@@ -39,6 +39,14 @@ This command displays a list of mods containing all of the terms (name) entered.
 
 _Aliases: s, se, find_
 
+### List
+```bash
+mmu list (with no args, in minecraft dir)
+```
+This command displays a list of all installed mods.
+
+_Aliases: ls, la, ll_
+
 ### Install
 ```bash
 mmu install (with no args, in package dir)
