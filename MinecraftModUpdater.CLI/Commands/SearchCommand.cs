@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CliFx;
+using CliFx.Attributes;
+using CliFx.Exceptions;
+using MinecraftModUpdater.CLI.Adapters;
+using MinecraftModUpdater.Core.Exceptions;
+using MinecraftModUpdater.Core.Models.Curse;
+using MinecraftModUpdater.Core.Services;
+using Spectre.Console;
+
+namespace MinecraftModUpdater.CLI.Commands
+{
+    [Command("search", Description = "Search a mod by name.")]
+    public class SearchCommand : ICommand
+    {
+        private readonly IModService _modService;
+
+        [CommandParameter(0, Name = "name", Description = "Mod name" )]
+        public string Name { get; set; } = "";
+        
+        public SearchCommand(IModService modService)
+        {
+            _modService = modService ?? throw new ArgumentNullException(nameof(modService));
+        }
+        
+        public async ValueTask ExecuteAsync(IConsole console)
+        {
+            var ansiConsole = ConsoleAdapter.ConvertToAnsiConsole(ref console);
+            List<CurseMod> mods;
+            
+            try
+            {
+                mods = (List<CurseMod>) await _modService.SearchByNameAsync(Name);
+            }
+            catch (MinecraftModUpdaterException e)
+            {
+                throw new CommandException(e.Message);
+            }
+
+            if (!mods.Any())
+            {
+                ansiConsole.Render(new Markup($"[yellow]Sorry but your search terms \"{Name}\" didn't return not result.[/]"));
+                return;
+            }
+            
+            var table = new Table();
+            table.AddColumn(new TableColumn("Project ID").Centered());
+            table.AddColumn(new TableColumn("Mod Name"));
+
+            foreach (var mod in mods)
+            {
+                table.AddRow(mod.Id.ToString(), mod.Name);
+            }
+
+            ansiConsole.Render(table);
+        }
+    }
+}
