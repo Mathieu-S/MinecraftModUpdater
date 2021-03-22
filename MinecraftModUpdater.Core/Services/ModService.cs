@@ -12,7 +12,7 @@ namespace MinecraftModUpdater.Core.Services
     /// <summary>
     /// Service managing mod files.
     /// </summary>
-    public class ModService
+    public class ModService : IModService
     {
         private readonly string _path;
 
@@ -41,9 +41,23 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="name">The name.</param>
         /// <param name="strictSearch">if set to <c>true</c> [strict search].</param>
         /// <returns></returns>
+        /// <exception cref="MinecraftModUpdaterException">
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// or
+        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
+        /// </exception>
         public async Task<IEnumerable<CurseMod>> SearchByNameAsync(string name, bool strictSearch = true)
         {
-            var mods = (List<CurseMod>) await ModRepository.SearchModByNameAsync(name);
+            List<CurseMod> mods;
+            
+            try
+            {
+                mods = (List<CurseMod>) await ModRepository.SearchModByNameAsync(name);
+            }
+            catch (CurseApiException e)
+            {
+                throw new MinecraftModUpdaterException(e.Message, e.InnerException);
+            }
 
             if (strictSearch)
             {
@@ -69,6 +83,18 @@ namespace MinecraftModUpdater.Core.Services
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
 
+        /// <summary>
+        /// Gets a specific version of the mod.
+        /// </summary>
+        /// <param name="modId">The mod identifier.</param>
+        /// <param name="fileId">The file identifier.</param>
+        /// <returns></returns>
+        public async Task<CurseModFile> GetSpecificRelease(uint modId, uint fileId)
+        {
+            var modFiles = await ModRepository.GetModFilesAsync(modId);
+            return modFiles.FirstOrDefault(m => m.Id == fileId);
+        }
+        
         /// <summary>
         /// Downloads the mod file asynchronous.
         /// </summary>
