@@ -51,7 +51,7 @@ namespace MinecraftModUpdater.CLI.Commands
             }
             else
             {
-                var modsFound = (List<ModData>) modListFile.Mods.Where(m => m.Name.ToLower().Contains(Name.ToLower()));
+                var modsFound = modListFile.Mods.Where(m => m.Name.ToLower().Contains(Name.ToLower())).ToList();
                 
                 if (modsFound.Count == 1)
                 {
