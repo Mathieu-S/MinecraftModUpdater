@@ -77,7 +77,7 @@ namespace MinecraftModUpdater.CLI.Commands
             _modService.DeleteModFile(modToDelete.FileName);
             await _modListFileService.RemoveModInModUpdaterFile(modToDelete);
             
-            ansiConsole.Render(new Markup($"[lime]The mod [bold]{modToDelete.Name}[/] has been removed.[/]"));
+            ansiConsole.Render(new Markup($"[lime]The mod [bold]{modToDelete.Name.EscapeMarkup()}[/] has been removed.[/]"));
         }
     }
 }

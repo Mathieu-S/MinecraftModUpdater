@@ -125,7 +125,7 @@ namespace MinecraftModUpdater.CLI.Commands
 
                 foreach (var mod in updatedMods)
                 {
-                    table.AddRow(mod.Id.ToString(), mod.Name);
+                    table.AddRow(mod.Id.ToString(), mod.Name.EscapeMarkup());
                 }
 
                 ansiConsole.Render(table);

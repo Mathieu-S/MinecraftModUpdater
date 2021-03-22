@@ -29,7 +29,7 @@ namespace MinecraftModUpdater.CLI.Commands
 
             foreach (var mod in modList.Mods)
             {
-                table.AddRow(mod.Id.ToString(), mod.Name);
+                table.AddRow(mod.Id.ToString(), mod.Name.EscapeMarkup());
             }
 
             ansiConsole.Render(table);

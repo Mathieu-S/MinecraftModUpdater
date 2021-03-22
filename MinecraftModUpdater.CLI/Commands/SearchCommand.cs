@@ -42,7 +42,7 @@ namespace MinecraftModUpdater.CLI.Commands
 
             if (!mods.Any())
             {
-                ansiConsole.Render(new Markup($"[yellow]Sorry but your search terms \"{Name}\" didn't return not result.[/]"));
+                ansiConsole.Render(new Markup($"[yellow]Sorry but your search terms \"{Name.EscapeMarkup()}\" didn't return not result.[/]"));
                 return;
             }
             
@@ -52,7 +52,7 @@ namespace MinecraftModUpdater.CLI.Commands
 
             foreach (var mod in mods)
             {
-                table.AddRow(mod.Id.ToString(), mod.Name);
+                table.AddRow(mod.Id.ToString(), mod.Name.EscapeMarkup());
             }
 
             ansiConsole.Render(table);

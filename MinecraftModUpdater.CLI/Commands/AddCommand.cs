@@ -82,7 +82,7 @@ namespace MinecraftModUpdater.CLI.Commands
             
             if (modFile == null)
             {
-                ansiConsole.Render(new Markup($"[red][bold]{Name}[/] isn't compatible with your minecraft version.[/]"));
+                ansiConsole.Render(new Markup($"[red][bold]{Name.EscapeMarkup()}[/] isn't compatible with your minecraft version.[/]"));
                 return;
             }
             
@@ -97,7 +97,7 @@ namespace MinecraftModUpdater.CLI.Commands
             };
             
             await _modListFileService.AddModToModUpdaterFile(modData);
-            ansiConsole.Render(new Markup($"[lime][bold]{modData.Name}[/] has been installed.[/]"));
+            ansiConsole.Render(new Markup($"[lime][bold]{modData.Name.EscapeMarkup()}[/] has been installed.[/]"));
         }
     }
 }
