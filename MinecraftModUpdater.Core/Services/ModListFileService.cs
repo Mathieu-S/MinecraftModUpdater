@@ -11,7 +11,7 @@ namespace MinecraftModUpdater.Core.Services
     /// <summary>
     /// Service managing the dependency file.
     /// </summary>
-    public class ModListFileService
+    public class ModListFileService : IModListFileService
     {
         private readonly string _path;
         private const string FILE_NAME = "modlist.json";
