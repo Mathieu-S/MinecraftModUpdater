@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
+using CliFx.Infrastructure;
 using MinecraftModUpdater.CLI.Adapters;
 using MinecraftModUpdater.Core.Exceptions;
 using MinecraftModUpdater.Core.Services;

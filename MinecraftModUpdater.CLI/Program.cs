@@ -36,10 +36,10 @@ namespace MinecraftModUpdater.CLI
         public static async Task<int> Main() =>
             await new CliApplicationBuilder()
                 .AddCommandsFromThisAssembly()
-                .UseTitle("Minecraft Mod Updater")
-                .UseVersionText("0.4.0")
-                .UseDescription("A package manager for Minecraft's mods")
-                .UseExecutableName("mmu")
+                .SetTitle("Minecraft Mod Updater")
+                .SetVersion("0.4.0")
+                .SetDescription("A package manager for Minecraft's mods")
+                .SetExecutableName("mmu")
                 .UseTypeActivator(GetServiceProvider().GetRequiredService)
                 .Build()
                 .RunAsync();

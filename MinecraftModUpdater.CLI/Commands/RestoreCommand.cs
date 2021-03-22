@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CliFx;
 using CliFx.Attributes;
+using CliFx.Infrastructure;
 using MinecraftModUpdater.CLI.Adapters;
 using MinecraftModUpdater.Core.Services;
 using Spectre.Console;

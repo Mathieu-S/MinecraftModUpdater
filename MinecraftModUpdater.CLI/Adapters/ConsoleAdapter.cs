@@ -1,4 +1,4 @@
-﻿using CliFx;
+﻿using CliFx.Infrastructure;
 using Spectre.Console;
 
 namespace MinecraftModUpdater.CLI.Adapters
