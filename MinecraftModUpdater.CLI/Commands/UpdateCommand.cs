@@ -49,7 +49,7 @@ namespace MinecraftModUpdater.CLI.Commands
                     
                     if (!modsFound.Any())
                     {
-                        ansiConsole.Render(new Markup($"[red]The mod called [bold]{ModName}[/] is not found.[/]"));
+                        ansiConsole.Render(new Markup($"[red]The mod called [bold]{ModName.EscapeMarkup()}[/] is not found.[/]"));
                         return;
                     }
 
@@ -80,11 +80,11 @@ namespace MinecraftModUpdater.CLI.Commands
                         modToUpdate.FileName = modFile.FileName;
                         await _modListFileService.UpdateModInModUpdaterFile(modToUpdate);
                         
-                        ansiConsole.Render(new Markup($"[lime][bold]{modToUpdate.Name}[/] has been updated.[/]"));
+                        ansiConsole.Render(new Markup($"[lime][bold]{modToUpdate.Name.EscapeMarkup()}[/] has been updated.[/]"));
                     }
                     else
                     {
-                        ansiConsole.Render(new Markup($"[yellow][bold]{modToUpdate.Name}[/] is already up to date.[/]"));
+                        ansiConsole.Render(new Markup($"[yellow][bold]{modToUpdate.Name.EscapeMarkup()}[/] is already up to date.[/]"));
                     }
                 }
                 else
