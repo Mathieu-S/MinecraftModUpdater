@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="CliFx" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Spectre.Console" Version="0.37.0" />
+    <PackageReference Include="Spectre.Console" Version="0.38.0" />
   </ItemGroup>
 
 </Project>
