@@ -6,7 +6,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>mmu</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <PackageVersion>0.3.0</PackageVersion>
+    <PackageVersion>0.4.0</PackageVersion>
     <Title>Minecraft Mod Updater</Title>
     <PackageProjectUrl>https://github.com/Mathieu-S/MinecraftModUpdater</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Mathieu-S/MinecraftModUpdater</RepositoryUrl>
