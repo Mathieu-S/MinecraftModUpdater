@@ -23,58 +23,7 @@ dotnet tool install --global MinecraftModUpdater.CLI
 ```
 
 ## Usage
-You can use it with `mmu`. The tool has the same commands as npm for NodeJs. Keep in mind you must enter these commands in root of your minecraft game.
-
-### Init
-```bash
-mmu init (with no args, in minecraft dir)
-```
-Initialise a new `modlist.json`. You must specify your actual version of Minecraft when prompted.
-
-### Search
-```bash
-mmu search <mod name> [--not-strict]
-```
-This command displays a list of mods containing all of the terms (name) entered. If the `--not-strict` parameter is set, mods that don't contain all the terms will be displayed.
-
-_Aliases: s, se, find_
-
-### List
-```bash
-mmu list (with no args, in minecraft dir)
-```
-This command displays a list of all installed mods.
-
-_Aliases: ls, la, ll_
-
-### Install
-```bash
-mmu install (with no args, in minecraft dir)
-mmu install <mod name>
-mmu install <mod id>
-```
-Install all mods in `modlist.json` if no argument. You can install a mod with its name or id. If the name is ambiguous, a list will be displayed, after which you can choose the correct one from the list.
-
-_Aliases: i, add_
-
-### Update
-```bash
-mmu update (with no args, in minecraft dir)
-mmu update <mod name>
-mmu update <mod id>
-```
-Update all mods to their latest compatible version if no argument. You can specify which mod should be updated by name or ID.
-
-_Aliases: up, upgrade_
-
-### Uninstall
-```bash
-mmu uninstall <mod name> (in minecraft dir)
-mmu uninstall <mod id>
-```
-Uninstall a mod by name or Id.
-
-_Aliases: remove, rm, r, un, unlink_
+You can use it with `mmu` in a terminal. Keep in mind you must enter these commands in root of your minecraft game. The CLI has built-in documentation.
 
 ## FAQ
 
