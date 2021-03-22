@@ -21,6 +21,9 @@ namespace MinecraftModUpdater.CLI.Commands
         [CommandParameter(0, Name = "name", Description = "Mod name" )]
         public string Name { get; set; } = "";
         
+        [CommandOption("strict", 's', Description = "Displays results containing strictly all terms.")]
+        public bool Strict { get; set; } = false;
+        
         public SearchCommand(IModService modService)
         {
             _modService = modService ?? throw new ArgumentNullException(nameof(modService));
@@ -33,7 +36,7 @@ namespace MinecraftModUpdater.CLI.Commands
             
             try
             {
-                mods = (List<CurseMod>) await _modService.SearchByNameAsync(Name);
+                mods = (List<CurseMod>) await _modService.SearchByNameAsync(Name, Strict);
             }
             catch (MinecraftModUpdaterException e)
             {
