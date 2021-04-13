@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -50,7 +52,10 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">modId can't be 0. - modId</exception>
         /// <exception cref="CurseApiException">
+        /// Mod ID {modId} does not exist in the API.
+        /// or
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
         /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
@@ -84,6 +89,7 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modName">Name of the mod.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException">modName</exception>
         /// <exception cref="CurseApiException">
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
@@ -113,7 +119,10 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">modId can't be 0. - modId</exception>
         /// <exception cref="CurseApiException">
+        /// Mod ID {modId} does not exist in the API.
+        /// or
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
         /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
@@ -147,7 +156,12 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="mod">The mod.</param>
         /// <returns></returns>
-        /// <exception cref="CurseApiException">Minecraft Mod Updater cannot access API, please check your internet connection.</exception>
+        /// <exception cref="ArgumentNullException">mod</exception>
+        /// <exception cref="CurseApiException">
+        /// An error occurred while downloading {mod.DisplayName}. Try again later.
+        /// or
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// </exception>
         public static async Task<Stream> GetStreamModFileAsync(CurseModFile mod)
         {
             _ = mod ?? throw new ArgumentNullException(nameof(mod));
