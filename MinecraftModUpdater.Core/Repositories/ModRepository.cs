@@ -66,6 +66,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"Mod ID {modId} does not exist in the API.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
@@ -124,6 +129,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"Mod ID {modId} does not exist in the API.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
@@ -149,6 +159,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"An error occurred while downloading {mod.DisplayName}. Try again later.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
         }
