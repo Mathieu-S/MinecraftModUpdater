@@ -17,7 +17,7 @@ namespace MinecraftModUpdater.Core.Repositories
         /// <summary>
         /// The base URL
         /// </summary>
-        private const string BASE_URL = "https://addons-ecs.forgesvc.net/api/v2/addon/";
+        private const string BASE_URL = "https://addons-ecs.forgesvc.net/api/v2/addon";
 
         /// <summary>
         /// Gets the list of mods from the Cruse API asynchronously.
@@ -33,7 +33,7 @@ namespace MinecraftModUpdater.Core.Repositories
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>(BASE_URL + "search?gameId=432&sectionId=6");
+                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}/search?gameId=432&sectionId=6");
             }
             catch (HttpRequestException ex)
             {
@@ -62,7 +62,7 @@ namespace MinecraftModUpdater.Core.Repositories
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<CurseMod>(BASE_URL + modId);
+                return await client.GetFromJsonAsync<CurseMod>($"{BASE_URL}/{modId}");
             }
             catch (HttpRequestException ex)
             {
@@ -91,7 +91,7 @@ namespace MinecraftModUpdater.Core.Repositories
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}search?gameId=432&sectionId=6&searchFilter={modName}");
+                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}/search?gameId=432&sectionId=6&searchFilter={modName}");
             }
             catch (HttpRequestException ex)
             {
@@ -120,7 +120,7 @@ namespace MinecraftModUpdater.Core.Repositories
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseModFile>>(BASE_URL + modId + "/files");
+                return await client.GetFromJsonAsync<IEnumerable<CurseModFile>>($"{BASE_URL}/{modId}/files");
             }
             catch (HttpRequestException ex)
             {
