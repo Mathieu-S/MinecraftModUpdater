@@ -57,6 +57,8 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </exception>
         public static async Task<CurseMod> GetModAsync(uint modId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            
             using var client = new HttpClient();
             try
             {
@@ -84,6 +86,8 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </exception>
         public static async Task<IEnumerable<CurseMod>> SearchModByNameAsync(string modName)
         {
+            _ = modName ?? throw new ArgumentNullException(nameof(modName));
+            
             using var client = new HttpClient();
             try
             {
@@ -111,6 +115,8 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </exception>
         public static async Task<IEnumerable<CurseModFile>> GetModFilesAsync(uint modId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            
             using var client = new HttpClient();
             try
             {
@@ -134,6 +140,8 @@ namespace MinecraftModUpdater.Core.Repositories
         /// <exception cref="CurseApiException">Minecraft Mod Updater cannot access API, please check your internet connection.</exception>
         public static async Task<Stream> GetStreamModFileAsync(CurseModFile mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             using var client = new HttpClient();
             try
             {
