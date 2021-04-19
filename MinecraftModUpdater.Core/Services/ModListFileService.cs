@@ -91,6 +91,7 @@ namespace MinecraftModUpdater.Core.Services
         /// </summary>
         /// <param name="data">The data.</param>
         public async Task EditMinecraftModUpdaterFileAsync(ModListFile data)
+        public async Task EditMinecraftModUpdaterFileAsync(ModListFile modListFile)
         {
             _ = modListFile ?? throw new ArgumentNullException(nameof(modListFile));
             
@@ -100,7 +101,7 @@ namespace MinecraftModUpdater.Core.Services
             }
 
             await using var openWriteStream = new FileStream(_path + FILE_NAME, FileMode.Truncate);
-            await JsonSerializer.SerializeAsync(openWriteStream, data);
+            await JsonSerializer.SerializeAsync(openWriteStream, modListFile);
         }
 
         /// <summary>
