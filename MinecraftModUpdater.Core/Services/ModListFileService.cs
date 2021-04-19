@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -8,9 +9,7 @@ using MinecraftModUpdater.Core.Models.MMU;
 
 namespace MinecraftModUpdater.Core.Services
 {
-    /// <summary>
-    /// Service managing the dependency file.
-    /// </summary>
+    /// <inheritdoc/>
     public class ModListFileService : IModListFileService
     {
         private readonly string _path;
@@ -20,14 +19,13 @@ namespace MinecraftModUpdater.Core.Services
         /// Initializes a new instance of the <see cref="ModListFileService"/> class.
         /// </summary>
         /// <param name="path">The path.</param>
+        /// <exception cref="ArgumentNullException">path</exception>
         public ModListFileService(string path)
         {
             _path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
-        /// <summary>
-        /// Creates the mod list file asynchronous.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task CreateModListFileAsync()
         {
             if (IsModListFileExist())
@@ -46,11 +44,7 @@ namespace MinecraftModUpdater.Core.Services
             await JsonSerializer.SerializeAsync(createStream, modListFile);
         }
 
-        /// <summary>
-        /// Creates the mod list file asynchronous.
-        /// </summary>
-        /// <param name="minecraftVersion">The minecraft version.</param>
-        /// <exception cref="MinecraftModUpdaterException">A file mod-list.json already exist.</exception>
+        /// <inheritdoc/>
         public async Task CreateModListFileAsync(string minecraftVersion)
         {
             _ = minecraftVersion ?? throw new ArgumentNullException(nameof(minecraftVersion));
@@ -71,10 +65,7 @@ namespace MinecraftModUpdater.Core.Services
             await JsonSerializer.SerializeAsync(createStream, modListFile);
         }
 
-        /// <summary>
-        /// Reads the minecraft mod updater file asynchronous.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<ModListFile> ReadMinecraftModUpdaterFileAsync()
         {
             if (!IsModListFileExist())
@@ -86,11 +77,7 @@ namespace MinecraftModUpdater.Core.Services
             return await JsonSerializer.DeserializeAsync<ModListFile>(openStream);
         }
 
-        /// <summary>
-        /// Edits the minecraft mod updater file asynchronous.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        public async Task EditMinecraftModUpdaterFileAsync(ModListFile data)
+        /// <inheritdoc/>
         public async Task EditMinecraftModUpdaterFileAsync(ModListFile modListFile)
         {
             _ = modListFile ?? throw new ArgumentNullException(nameof(modListFile));
@@ -104,10 +91,7 @@ namespace MinecraftModUpdater.Core.Services
             await JsonSerializer.SerializeAsync(openWriteStream, modListFile);
         }
 
-        /// <summary>
-        /// Adds the mod to mod updater file.
-        /// </summary>
-        /// <param name="mod">The mod.</param>
+        /// <inheritdoc/>
         public async Task AddModToModUpdaterFile(ModData mod)
         {
             _ = mod ?? throw new ArgumentNullException(nameof(mod));
@@ -129,10 +113,7 @@ namespace MinecraftModUpdater.Core.Services
             await EditMinecraftModUpdaterFileAsync(modUpdaterFile);
         }
 
-        /// <summary>
-        /// Updates the mod in mod updater file.
-        /// </summary>
-        /// <param name="mod">The mod.</param>
+        /// <inheritdoc/>
         public async Task UpdateModInModUpdaterFile(ModData mod)
         {
             _ = mod ?? throw new ArgumentNullException(nameof(mod));
@@ -151,10 +132,7 @@ namespace MinecraftModUpdater.Core.Services
             await EditMinecraftModUpdaterFileAsync(modUpdaterFile);
         }
 
-        /// <summary>
-        /// Removes the mod in mod updater file.
-        /// </summary>
-        /// <param name="mod">The mod.</param>
+        /// <inheritdoc/>
         public async Task RemoveModInModUpdaterFile(ModData mod)
         {
             _ = mod ?? throw new ArgumentNullException(nameof(mod));
