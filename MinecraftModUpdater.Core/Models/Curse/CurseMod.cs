@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MinecraftModUpdater.Core.Models.Curse
 {
     /// <summary>
-    /// 
+    /// Represents a mod in the Curse API.
     /// </summary>
     public class CurseMod
     {

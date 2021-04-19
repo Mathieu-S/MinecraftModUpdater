@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -17,7 +19,7 @@ namespace MinecraftModUpdater.Core.Repositories
         /// <summary>
         /// The base URL
         /// </summary>
-        private const string BASE_URL = "https://addons-ecs.forgesvc.net/api/v2/addon/";
+        private const string BASE_URL = "https://addons-ecs.forgesvc.net/api/v2/addon";
 
         /// <summary>
         /// Gets the list of mods from the Cruse API asynchronously.
@@ -33,7 +35,7 @@ namespace MinecraftModUpdater.Core.Repositories
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>(BASE_URL + "search?gameId=432&sectionId=6");
+                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}/search?gameId=432&sectionId=6");
             }
             catch (HttpRequestException ex)
             {
@@ -50,20 +52,30 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">modId can't be 0. - modId</exception>
         /// <exception cref="CurseApiException">
+        /// Mod ID {modId} does not exist in the API.
+        /// or
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
         /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
         /// </exception>
         public static async Task<CurseMod> GetModAsync(uint modId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<CurseMod>(BASE_URL + modId);
+                return await client.GetFromJsonAsync<CurseMod>($"{BASE_URL}/{modId}");
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"Mod ID {modId} does not exist in the API.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
@@ -77,6 +89,7 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modName">Name of the mod.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException">modName</exception>
         /// <exception cref="CurseApiException">
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
@@ -84,10 +97,12 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </exception>
         public static async Task<IEnumerable<CurseMod>> SearchModByNameAsync(string modName)
         {
+            _ = modName ?? throw new ArgumentNullException(nameof(modName));
+            
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}search?gameId=432&sectionId=6&searchFilter={modName}");
+                return await client.GetFromJsonAsync<IEnumerable<CurseMod>>($"{BASE_URL}/search?gameId=432&sectionId=6&searchFilter={modName}");
             }
             catch (HttpRequestException ex)
             {
@@ -104,20 +119,30 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="modId">The mod identifier.</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">modId can't be 0. - modId</exception>
         /// <exception cref="CurseApiException">
+        /// Mod ID {modId} does not exist in the API.
+        /// or
         /// Minecraft Mod Updater cannot access API, please check your internet connection.
         /// or
         /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
         /// </exception>
         public static async Task<IEnumerable<CurseModFile>> GetModFilesAsync(uint modId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            
             using var client = new HttpClient();
             try
             {
-                return await client.GetFromJsonAsync<IEnumerable<CurseModFile>>(BASE_URL + modId + "/files");
+                return await client.GetFromJsonAsync<IEnumerable<CurseModFile>>($"{BASE_URL}/{modId}/files");
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"Mod ID {modId} does not exist in the API.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
             catch (JsonException ex)
@@ -131,9 +156,16 @@ namespace MinecraftModUpdater.Core.Repositories
         /// </summary>
         /// <param name="mod">The mod.</param>
         /// <returns></returns>
-        /// <exception cref="CurseApiException">Minecraft Mod Updater cannot access API, please check your internet connection.</exception>
+        /// <exception cref="ArgumentNullException">mod</exception>
+        /// <exception cref="CurseApiException">
+        /// An error occurred while downloading {mod.DisplayName}. Try again later.
+        /// or
+        /// Minecraft Mod Updater cannot access API, please check your internet connection.
+        /// </exception>
         public static async Task<Stream> GetStreamModFileAsync(CurseModFile mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             using var client = new HttpClient();
             try
             {
@@ -141,6 +173,11 @@ namespace MinecraftModUpdater.Core.Repositories
             }
             catch (HttpRequestException ex)
             {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new CurseApiException($"An error occurred while downloading {mod.DisplayName}. Try again later.", ex.InnerException);
+                }
+                
                 throw new CurseApiException("Minecraft Mod Updater cannot access API, please check your internet connection.", ex.InnerException);
             }
         }

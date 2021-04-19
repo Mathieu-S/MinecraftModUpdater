@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MinecraftModUpdater.Core.Models.MMU
 {
+    /// <summary>
+    /// Represents the modlist.json.
+    /// </summary>
     public class ModListFile
     {
         public byte FileVersion { get; set; }
@@ -10,6 +13,9 @@ namespace MinecraftModUpdater.Core.Models.MMU
         public IList<ModData> Mods { get; set; }
     }
 
+    /// <summary>
+    /// Represents the data of a mod.
+    /// </summary>
     public class ModData : IEquatable<ModData>
     {
         public uint Id { get; set; }
