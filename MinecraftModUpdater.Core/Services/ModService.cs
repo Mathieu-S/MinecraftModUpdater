@@ -22,7 +22,7 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="path">The path.</param>
         public ModService(string path)
         {
-            _path = path;
+            _path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
         /// <summary>
@@ -32,6 +32,7 @@ namespace MinecraftModUpdater.Core.Services
         /// <returns></returns>
         public async Task<CurseMod> SearchByIdAsync(uint modId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
             return await ModRepository.GetModAsync(modId);
         }
 
@@ -48,6 +49,8 @@ namespace MinecraftModUpdater.Core.Services
         /// </exception>
         public async Task<IEnumerable<CurseMod>> SearchByNameAsync(string name, bool strictSearch = true)
         {
+            _ = name ?? throw new ArgumentNullException(nameof(name));
+            
             List<CurseMod> mods;
             
             try
@@ -78,6 +81,9 @@ namespace MinecraftModUpdater.Core.Services
         /// <returns></returns>
         public async Task<CurseModFile> GetLastCompatibleRelease(uint modId, string minecraftVersion)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            _ = minecraftVersion ?? throw new ArgumentNullException(nameof(minecraftVersion));
+            
             var modFiles = await ModRepository.GetModFilesAsync(modId);
             var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(minecraftVersion));
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
@@ -91,6 +97,9 @@ namespace MinecraftModUpdater.Core.Services
         /// <returns></returns>
         public async Task<CurseModFile> GetSpecificRelease(uint modId, uint fileId)
         {
+            _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
+            _ = fileId == 0 ? throw new ArgumentException("fileId can't be 0.", nameof(fileId)) : 0;
+            
             var modFiles = await ModRepository.GetModFilesAsync(modId);
             return modFiles.FirstOrDefault(m => m.Id == fileId);
         }
@@ -102,6 +111,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <returns></returns>
         public async Task<bool> DownloadModFileAsync(CurseModFile mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             if (!Directory.Exists(_path + @"\mods"))
             {
                 Directory.CreateDirectory(_path + @"\mods");
@@ -125,6 +136,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="fileName">Name of the file.</param>
         public void DeleteModFile(string fileName)
         {
+            _ = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            
             if (File.Exists(_path + @"\mods\" + fileName))
             {
                 File.Delete(_path + @"\mods\" +fileName);
@@ -139,6 +152,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <exception cref="MinecraftModUpdaterException">The modId '{modId}' is not a valid ID.</exception>
         public uint ConvertModId(string modId)
         {
+            _ = modId ?? throw new ArgumentNullException(nameof(modId));
+            
             try
             {
                 return Convert.ToUInt32(modId);
