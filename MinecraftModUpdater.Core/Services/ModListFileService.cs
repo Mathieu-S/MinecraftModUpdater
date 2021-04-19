@@ -22,7 +22,7 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="path">The path.</param>
         public ModListFileService(string path)
         {
-            _path = path;
+            _path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
         /// <summary>
@@ -53,6 +53,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <exception cref="MinecraftModUpdaterException">A file mod-list.json already exist.</exception>
         public async Task CreateModListFileAsync(string minecraftVersion)
         {
+            _ = minecraftVersion ?? throw new ArgumentNullException(nameof(minecraftVersion));
+            
             if (IsModListFileExist())
             {
                 throw new MinecraftModUpdaterException($"A file {FILE_NAME} already exist.");
@@ -90,6 +92,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="data">The data.</param>
         public async Task EditMinecraftModUpdaterFileAsync(ModListFile data)
         {
+            _ = modListFile ?? throw new ArgumentNullException(nameof(modListFile));
+            
             if (!IsModListFileExist())
             {
                 return;
@@ -105,6 +109,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="mod">The mod.</param>
         public async Task AddModToModUpdaterFile(ModData mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             if (!IsModListFileExist())
             {
                 return;
@@ -128,6 +134,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="mod">The mod.</param>
         public async Task UpdateModInModUpdaterFile(ModData mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             if (!IsModListFileExist())
             {
                 return;
@@ -148,6 +156,8 @@ namespace MinecraftModUpdater.Core.Services
         /// <param name="mod">The mod.</param>
         public async Task RemoveModInModUpdaterFile(ModData mod)
         {
+            _ = mod ?? throw new ArgumentNullException(nameof(mod));
+            
             if (!IsModListFileExist())
             {
                 return;
