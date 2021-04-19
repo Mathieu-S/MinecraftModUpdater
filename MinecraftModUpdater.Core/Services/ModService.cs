@@ -9,9 +9,7 @@ using MinecraftModUpdater.Core.Repositories;
 
 namespace MinecraftModUpdater.Core.Services
 {
-    /// <summary>
-    /// Service managing mod files.
-    /// </summary>
+    /// <inheritdoc/>
     public class ModService : IModService
     {
         private readonly string _path;
@@ -20,33 +18,20 @@ namespace MinecraftModUpdater.Core.Services
         /// Initializes a new instance of the <see cref="ModService"/> class.
         /// </summary>
         /// <param name="path">The path.</param>
+        /// <exception cref="ArgumentNullException">path</exception>
         public ModService(string path)
         {
             _path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
-        /// <summary>
-        /// Searches the mod by its identifier.
-        /// </summary>
-        /// <param name="modId">The mod identifier.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<CurseMod> SearchByIdAsync(uint modId)
         {
             _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
             return await ModRepository.GetModAsync(modId);
         }
 
-        /// <summary>
-        /// Searches the mod by its name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="strictSearch">if set to <c>true</c> [strict search].</param>
-        /// <returns></returns>
-        /// <exception cref="MinecraftModUpdaterException">
-        /// Minecraft Mod Updater cannot access API, please check your internet connection.
-        /// or
-        /// Minecraft Mod Updater cannot parse the API. This happens if Curse change their structure. Please, open an issue.
-        /// </exception>
+        /// <inheritdoc/>
         public async Task<IEnumerable<CurseMod>> SearchByNameAsync(string name, bool strictSearch = true)
         {
             _ = name ?? throw new ArgumentNullException(nameof(name));
@@ -73,12 +58,7 @@ namespace MinecraftModUpdater.Core.Services
             return mods;
         }
 
-        /// <summary>
-        /// Gets the latest compatible version of the mod.
-        /// </summary>
-        /// <param name="modId">The mod identifier.</param>
-        /// <param name="minecraftVersion">The minecraft version.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<CurseModFile> GetLastCompatibleRelease(uint modId, string minecraftVersion)
         {
             _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
@@ -89,12 +69,7 @@ namespace MinecraftModUpdater.Core.Services
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
 
-        /// <summary>
-        /// Gets a specific version of the mod.
-        /// </summary>
-        /// <param name="modId">The mod identifier.</param>
-        /// <param name="fileId">The file identifier.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<CurseModFile> GetSpecificRelease(uint modId, uint fileId)
         {
             _ = modId == 0 ? throw new ArgumentException("modId can't be 0.", nameof(modId)) : 0;
@@ -103,12 +78,8 @@ namespace MinecraftModUpdater.Core.Services
             var modFiles = await ModRepository.GetModFilesAsync(modId);
             return modFiles.FirstOrDefault(m => m.Id == fileId);
         }
-        
-        /// <summary>
-        /// Downloads the mod file asynchronous.
-        /// </summary>
-        /// <param name="mod">The mod.</param>
-        /// <returns></returns>
+
+        /// <inheritdoc/>
         public async Task<bool> DownloadModFileAsync(CurseModFile mod)
         {
             _ = mod ?? throw new ArgumentNullException(nameof(mod));
@@ -130,10 +101,7 @@ namespace MinecraftModUpdater.Core.Services
             return true;
         }
 
-        /// <summary>
-        /// Deletes the mod file.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
+        /// <inheritdoc/>
         public void DeleteModFile(string fileName)
         {
             _ = fileName ?? throw new ArgumentNullException(nameof(fileName));
@@ -144,12 +112,7 @@ namespace MinecraftModUpdater.Core.Services
             }
         }
 
-        /// <summary>
-        /// Converts the mod identifier.
-        /// </summary>
-        /// <param name="modId">The mod identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="MinecraftModUpdaterException">The modId '{modId}' is not a valid ID.</exception>
+        /// <inheritdoc/>
         public uint ConvertModId(string modId)
         {
             _ = modId ?? throw new ArgumentNullException(nameof(modId));
