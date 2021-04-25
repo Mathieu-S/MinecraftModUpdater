@@ -29,6 +29,7 @@ namespace MinecraftModUpdater.CLI
             services.AddTransient<RestoreCommand>();
             services.AddTransient<SearchCommand>();
             services.AddTransient<UpdateCommand>();
+            services.AddTransient<UpgradeCommand>();
 
             return services.BuildServiceProvider();
         }
