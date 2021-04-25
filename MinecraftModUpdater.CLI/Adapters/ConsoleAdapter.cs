@@ -11,7 +11,7 @@ namespace MinecraftModUpdater.CLI.Adapters
             {
                 Ansi = AnsiSupport.Detect,
                 ColorSystem = ColorSystemSupport.Detect,
-                Out = console.Output
+                Out = new AnsiConsoleOutput(console.Output)
             });
         }
     }
