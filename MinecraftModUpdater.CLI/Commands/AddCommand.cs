@@ -59,7 +59,7 @@ namespace MinecraftModUpdater.CLI.Commands
                 
                 if (!modsFound.Any())
                 {
-                    ansiConsole.Render(new Markup($"[red]The mod called [bold]{Name}[/] is not found.[/]"));
+                    ansiConsole.Write(new Markup($"[red]The mod called [bold]{Name}[/] is not found.[/]"));
                     return;
                 }
 
@@ -83,7 +83,7 @@ namespace MinecraftModUpdater.CLI.Commands
             
             if (modFile == null)
             {
-                ansiConsole.Render(new Markup($"[red][bold]{Name.EscapeMarkup()}[/] isn't compatible with your minecraft version.[/]"));
+                ansiConsole.Write(new Markup($"[red][bold]{Name.EscapeMarkup()}[/] isn't compatible with your minecraft version.[/]"));
                 return;
             }
             
@@ -98,7 +98,7 @@ namespace MinecraftModUpdater.CLI.Commands
             };
             
             await _modListFileService.AddModToModUpdaterFile(modData);
-            ansiConsole.Render(new Markup($"[lime][bold]{modData.Name.EscapeMarkup()}[/] has been installed.[/]"));
+            ansiConsole.Write(new Markup($"[lime][bold]{modData.Name.EscapeMarkup()}[/] has been installed.[/]"));
         }
     }
 }

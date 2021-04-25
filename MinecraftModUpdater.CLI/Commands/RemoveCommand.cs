@@ -71,14 +71,14 @@ namespace MinecraftModUpdater.CLI.Commands
 
             if (modToDelete == null)
             {
-                ansiConsole.Render(new Markup("[red]This mod doesn't appear to be installed.[/]"));
+                ansiConsole.Write(new Markup("[red]This mod doesn't appear to be installed.[/]"));
                 return;
             }
             
             _modService.DeleteModFile(modToDelete.FileName);
             await _modListFileService.RemoveModInModUpdaterFile(modToDelete);
             
-            ansiConsole.Render(new Markup($"[lime]The mod [bold]{modToDelete.Name.EscapeMarkup()}[/] has been removed.[/]"));
+            ansiConsole.Write(new Markup($"[lime]The mod [bold]{modToDelete.Name.EscapeMarkup()}[/] has been removed.[/]"));
         }
     }
 }

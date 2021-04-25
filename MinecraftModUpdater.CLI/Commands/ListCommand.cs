@@ -33,7 +33,7 @@ namespace MinecraftModUpdater.CLI.Commands
                 table.AddRow(mod.Id.ToString(), mod.Name.EscapeMarkup());
             }
 
-            ansiConsole.Render(table);
+            ansiConsole.Write(table);
         }
     }
 }

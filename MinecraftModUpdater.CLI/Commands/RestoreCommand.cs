@@ -34,11 +34,11 @@ namespace MinecraftModUpdater.CLI.Commands
                     await _modService.DownloadModFileAsync(modFile);
                 }
                 
-                ansiConsole.Render(new Markup($"[lime]{modListFile.Mods.Count} mod(s) has been restored.[/]"));
+                ansiConsole.Write(new Markup($"[lime]{modListFile.Mods.Count} mod(s) has been restored.[/]"));
             }
             else
             {
-                ansiConsole.Render(new Markup("[yellow]There is no mods to install.[/]"));
+                ansiConsole.Write(new Markup("[yellow]There is no mods to install.[/]"));
             }
         }
     }
