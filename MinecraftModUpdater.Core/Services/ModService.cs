@@ -66,6 +66,22 @@ namespace MinecraftModUpdater.Core.Services
             
             var modFiles = await ModRepository.GetModFilesAsync(modId);
             var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(minecraftVersion));
+
+            if (!compatibleMods.Any())
+            {
+                var (majorVersion, minorVersion, patchVersion) = ParseMinecraftVersion(minecraftVersion);
+                while (!compatibleMods.Any())
+                {
+                    patchVersion--;
+                    compatibleMods = modFiles.Where(m => m.GameVersion.Contains($"{majorVersion}.{minorVersion}.{patchVersion}"));
+                    
+                    if (patchVersion < 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
             return compatibleMods.OrderBy(m => m.FileDate.Ticks).LastOrDefault();
         }
 
@@ -125,6 +141,19 @@ namespace MinecraftModUpdater.Core.Services
             {
                 throw new MinecraftModUpdaterException($"The modId '{modId}' is not a valid ID.", e.InnerException);
             }
+        }
+
+        /// <summary>
+        /// Split the minecraft version string into tuple.
+        /// </summary>
+        /// <param name="minecraftVersion"></param>
+        /// <returns></returns>
+        private static (sbyte, sbyte, sbyte) ParseMinecraftVersion(string minecraftVersion)
+        {
+            var minecraftVersionNumberSplit = minecraftVersion.Split('.');
+            return (Convert.ToSByte(minecraftVersionNumberSplit[0]),
+                Convert.ToSByte(minecraftVersionNumberSplit[1]),
+                Convert.ToSByte(minecraftVersionNumberSplit[2]));
         }
     }
 }
