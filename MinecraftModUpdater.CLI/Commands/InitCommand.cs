@@ -43,7 +43,7 @@ namespace MinecraftModUpdater.CLI.Commands
                 throw new CommandException(e.Message);
             }
             
-            ansiConsole.Render(new Markup($"You created a [italic]modlist.json[/] for [lime]Minecraft {version}[/]"));
+            ansiConsole.Write(new Markup($"You created a [italic]modlist.json[/] for [lime]Minecraft {version}[/]"));
         }
     }
 }

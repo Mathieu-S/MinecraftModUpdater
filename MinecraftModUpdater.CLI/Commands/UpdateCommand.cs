@@ -50,7 +50,7 @@ namespace MinecraftModUpdater.CLI.Commands
                     
                     if (!modsFound.Any())
                     {
-                        ansiConsole.Render(new Markup($"[red]The mod called [bold]{ModName.EscapeMarkup()}[/] is not found.[/]"));
+                        ansiConsole.Write(new Markup($"[red]The mod called [bold]{ModName.EscapeMarkup()}[/] is not found.[/]"));
                         return;
                     }
 
@@ -81,16 +81,16 @@ namespace MinecraftModUpdater.CLI.Commands
                         modToUpdate.FileName = modFile.FileName;
                         await _modListFileService.UpdateModInModUpdaterFile(modToUpdate);
                         
-                        ansiConsole.Render(new Markup($"[lime][bold]{modToUpdate.Name.EscapeMarkup()}[/] has been updated.[/]"));
+                        ansiConsole.Write(new Markup($"[lime][bold]{modToUpdate.Name.EscapeMarkup()}[/] has been updated.[/]"));
                     }
                     else
                     {
-                        ansiConsole.Render(new Markup($"[yellow][bold]{modToUpdate.Name.EscapeMarkup()}[/] is already up to date.[/]"));
+                        ansiConsole.Write(new Markup($"[yellow][bold]{modToUpdate.Name.EscapeMarkup()}[/] is already up to date.[/]"));
                     }
                 }
                 else
                 {
-                    ansiConsole.Render(new Markup("[red]This mod doesn't appear to be installed.[/]"));
+                    ansiConsole.Write(new Markup("[red]This mod doesn't appear to be installed.[/]"));
                 }
             }
             else
@@ -114,11 +114,11 @@ namespace MinecraftModUpdater.CLI.Commands
 
                 if (!updatedMods.Any())
                 {
-                    ansiConsole.Render(new Markup("[yellow]There are no mods to update.[/]"));
+                    ansiConsole.Write(new Markup("[yellow]There are no mods to update.[/]"));
                     return;
                 }
                 
-                ansiConsole.Render(new Markup($"[lime]These [bold]{updatedMods.Count}[/] mod(s) have been updated:[/]"));
+                ansiConsole.Write(new Markup($"[lime]These [bold]{updatedMods.Count}[/] mod(s) have been updated:[/]"));
                 
                 var table = new Table();
                 table.AddColumn(new TableColumn("Project ID").Centered());
@@ -129,7 +129,7 @@ namespace MinecraftModUpdater.CLI.Commands
                     table.AddRow(mod.Id.ToString(), mod.Name.EscapeMarkup());
                 }
 
-                ansiConsole.Render(table);
+                ansiConsole.Write(table);
             }
         }
     }

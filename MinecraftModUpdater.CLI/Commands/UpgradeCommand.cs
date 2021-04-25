@@ -38,7 +38,7 @@ namespace MinecraftModUpdater.CLI.Commands
             modListFile.MinecraftVersion = version;
             await _modListFileService.EditMinecraftModUpdaterFileAsync(modListFile);
             
-            ansiConsole.Render(new Markup($"Your Minecraft version has been change to [lime]{version}[/]"));
+            ansiConsole.Write(new Markup($"Your Minecraft version has been change to [lime]{version}[/]"));
         }
     }
 }
