@@ -65,7 +65,10 @@ namespace MinecraftModUpdater.Core.Services
             _ = minecraftVersion ?? throw new ArgumentNullException(nameof(minecraftVersion));
             
             var modFiles = await ModRepository.GetModFilesAsync(modId);
-            var compatibleMods = modFiles.Where(m => m.GameVersion.Contains(minecraftVersion));
+            var compatibleMods = modFiles.Where(m =>
+                m.GameVersion.Contains(minecraftVersion) &&
+                !m.GameVersion.Contains("Fabric")
+            );
 
             if (!compatibleMods.Any())
             {
