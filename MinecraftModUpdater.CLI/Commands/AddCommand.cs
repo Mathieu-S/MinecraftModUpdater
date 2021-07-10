@@ -74,7 +74,7 @@ namespace MinecraftModUpdater.CLI.Commands
                         new SelectionPrompt<CurseMod>()
                             .Title("The name entered is ambiguous. Several mods contain the same name. Please choose one:")
                             .PageSize(10)
-                            .UseConverter(x => x.Name)
+                            .UseConverter(x => x.Name.EscapeMarkup())
                             .AddChoices(modsFound));
                     
                     modFile = await _modService.GetLastCompatibleRelease(mod.Id, modListFile.MinecraftVersion);
